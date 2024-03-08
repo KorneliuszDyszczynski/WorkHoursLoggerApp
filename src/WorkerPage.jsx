@@ -107,26 +107,32 @@ const WorkerPage = () => {
 
 
     return (
-        <form onSubmit={handleSubmit} className="hours-form">
-            <div className="form-group">
-                {daysArray.map((day) => (
-                    <div key={day} className="day-container">
-                        <label htmlFor={`day-${day}`} className="day-label">{`Day ${day}: `}</label>
-                        <input
-                            type="number"
-                            id={`day-${day}`}
-                            value={hours[day] || ''}
-                            onChange={(e) => handleInputChange(day, e.target.value)}
-                            className="hours-input"
-                        />
-                    </div>
-                ))}
-            </div>
-            <button type="submit" className="submit-button">
-                Submit
-            </button>
-        </form>
+        <div>
+            <h2>{`Month: ${currentMonth}/${currentYear}`}</h2>
+            <h4>{`Email: ${globals.userEmail}`}</h4>
+
+            <form onSubmit={handleSubmit} className="hours-form">
+                <div className="form-group">
+                    {daysArray.map((day) => (
+                        <div key={day} className="day-container">
+                            <label htmlFor={`day-${day}`} className="day-label">{`Day ${day}: `}</label>
+                            <input
+                                type="number"
+                                id={`day-${day}`}
+                                value={hours[day] || ''}
+                                onChange={(e) => handleInputChange(day, e.target.value)}
+                                className="hours-input"
+                            />
+                        </div>
+                    ))}
+                </div>
+                <button type="submit" className="submit-button">
+                    Submit
+                </button>
+            </form>
+        </div>
     );
 };
+
 
 export default WorkerPage;
