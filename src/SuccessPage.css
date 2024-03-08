@@ -1,0 +1,19 @@
+/* SuccessPage.css */
+
+.success-page {
+    text-align: center;
+    margin: 50px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: var(--background-color, #f0f0f0);
+    color: var(--text-color, #000);
+}
+
+    .success-page h1 {
+        color: var(--success-color, green);
+    }
+
+    .success-page p {
+        font-size: 18px;
+    }
