@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { auth, firestore } from './Firebase';
 import { doc, setDoc, collection, getDocs } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import './AdminPage.css';
 import 'react-toastify/dist/ReactToastify.css';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function generateRandomId(length = 10) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -20,7 +21,7 @@ function generateRandomId(length = 10) {
 
 const AdminPage = () => {
 
-
+    const navigate = useNavigate();
     const [workers, setWorkers] = useState([]);
     const [newEmployee, setNewEmployee] = useState({ name: '', email: '', password: '' });
 
@@ -37,6 +38,10 @@ const AdminPage = () => {
 
         fetchData();
     }, []);
+
+    const goToHistoryPage = () => {
+        navigate('/history');
+    }
 
     // Function to handle form submission and add a new employee
     const handleAddEmployee = async () => {
@@ -131,6 +136,10 @@ const AdminPage = () => {
                 </div>
                 <button type="button" onClick={handleAddEmployee}>Add Employee</button>
             </form>
+
+            <hr style={{ margin: '20px 0', width: '100%' }} />
+
+            <button type="button" onClick={goToHistoryPage}>History</button>
         </div>
     );
 };

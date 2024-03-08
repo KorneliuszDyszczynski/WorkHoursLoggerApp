@@ -5,6 +5,8 @@ import AdminPage from './AdminPage';
 import LoginPage from './LoginPage';
 import WorkerPage from './WorkerPage';
 import SuccessPage from './SuccessPage';
+import HistoryPage from './HistoryPage';
+
 
 const Navigation = () => {
     return (
@@ -14,6 +16,7 @@ const Navigation = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/worker" element={<WorkerPage />} />
             <Route path="/success" element={<SuccessPage />} />
+            <Route path="/history" element={<HistoryPage />} />
         </Routes>
     );
 };
