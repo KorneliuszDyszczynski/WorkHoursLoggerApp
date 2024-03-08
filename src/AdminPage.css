@@ -16,3 +16,42 @@ table {
     width: 100%;
     border-collapse: collapse;
 }
+
+
+
+.worker-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #333;
+    color: white;
+}
+
+    .worker-table th, .worker-table td {
+        border: 1px solid #555;
+        padding: 12px;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    .worker-table th {
+        background-color: #555;
+    }
+
+    .worker-table tbody tr:hover {
+        background-color: #444;
+    }
+
+    /* Button styling for dark mode */
+    .worker-table button {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+        .worker-table button:hover {
+            background-color: #45a049;
+        }

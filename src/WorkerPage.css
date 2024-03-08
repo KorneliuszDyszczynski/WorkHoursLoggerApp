@@ -116,6 +116,11 @@ button {
 .day-container {
     display: flex;
     flex-direction: column;
+    border: thin solid #ddd; /* Add color and style if needed */
+    border-radius: 8px; /* Adjust the value for rounded corners */
+    padding: 3px; /* Add padding to create space between border and content */
+    margin-bottom: 0px;
+    background-color: #282c36;
 }
 
 .day-label {
