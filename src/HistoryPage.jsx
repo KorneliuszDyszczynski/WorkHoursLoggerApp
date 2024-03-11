@@ -33,7 +33,7 @@ const HistoryPage = () => {
             return days.join(', ');
         } else {
             const summary = days.slice(0, MAX_DISPLAY_DAYS).join(', ');
-            return `${summary}, and ${days.length - MAX_DISPLAY_DAYS} more `;
+            return `${summary}, and ${days.length - MAX_DISPLAY_DAYS-1} more `;
         }
     };
 
