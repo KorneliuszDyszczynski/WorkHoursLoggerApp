@@ -20,6 +20,30 @@ const LoginPage = () => {
             // Sign in with Firebase authentication
             await signInWithEmailAndPassword(auth, username, password);
 
+            globals.userEmail = username;
+            globals.auth = true;
+
+            try {
+                //check Role
+                const workerCollectionRef = collection(firestore, 'Workers');
+                const querySnapshot = await getDocs(workerCollectionRef);
+                const userData = querySnapshot.docs.find(
+                    (doc) => doc.data().Email === globals.userEmail
+                );
+
+                globals.Name = userData.data().Name;
+
+                // If signInWithEmailAndPassword is successful, navigate based on user role
+                if (userData.data().Role == 'Admin') {
+                    navigate('/admin');
+                } else {
+                    navigate('/worker');
+                }
+
+            } catch (error) {
+                toast.error('There is no worker with that email or role is invalid');
+            }
+
         } catch (error) {
             console.error('Error logging in:', error.message);
             // Handle authentication error (e.g., display error message)
@@ -27,35 +51,14 @@ const LoginPage = () => {
                 // Handle invalid credentials (e.g., display a specific error message to the user)
                 console.error('Invalid credentials. Please check your username and password.');
                 toast.error('Invalid credentials. Please check your username and password.');
+
             } else {
                 // Handle other authentication errors
                 console.error('Unexpected authentication error:', error.code);
-                toast.error('Unexpected authentication error. Please try again later.');
+                toast.error(error.message);
             }
         }
-        globals.userEmail = username;
-        globals.auth = true;
-
-        try {
-            //check Role
-            const workerCollectionRef = collection(firestore, 'Workers');
-            const querySnapshot = await getDocs(workerCollectionRef);
-            const userData = querySnapshot.docs.find(
-                (doc) => doc.data().Email === globals.userEmail
-            );
-
-            globals.Name = userData.data().Name;
-
-            // If signInWithEmailAndPassword is successful, navigate based on user role
-            if (userData.data().Role == 'Admin') {
-                navigate('/admin');
-            } else {
-                navigate('/worker');
-            }
-
-        } catch (error) {
-            toast.error('There is no worker with that email or role is invalid');
-        }
+        
 
 
     };
