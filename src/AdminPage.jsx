@@ -4,7 +4,7 @@ import { doc, setDoc, collection, getDocs } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import './AdminPage.css';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import globals from './globals'
 
@@ -67,9 +67,20 @@ const AdminPage = () => {
             });
             //add user for authentication
             await createUserWithEmailAndPassword(auth, newEmployee.email, newEmployee.password);
-            window.location.reload(false);
+
+            // Fetch the updated data from Firestore
+            const workersCollection = collection(firestore, "Workers");
+            const workersSnapshot = await getDocs(workersCollection);
+            const filteredWorkers = workersSnapshot.docs
+                .filter(doc => doc.data().Role === "Worker")
+                .map(doc => ({ id: doc.id, ...doc.data() }));
+
+            // Update the state with the new data
+            setWorkers(filteredWorkers);
+
+            toast.success("User added successfully! Please reload the page.");
         } catch (error) {
-            window.location.reload(false);
+            toast.error('Couldnt create user with that credentials. ', error);
         }
     };
 
