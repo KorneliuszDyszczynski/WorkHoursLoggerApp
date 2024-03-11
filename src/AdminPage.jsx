@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { auth, firestore } from './Firebase';
-import { doc, setDoc, collection, getDocs } from "firebase/firestore";
+import { doc, setDoc, collection, getDocs, deleteDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import './AdminPage.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -47,6 +47,30 @@ const AdminPage = () => {
     const goToHistoryPage = () => {
         navigate('/history');
     }
+
+    // Function to handle user deletion
+    const handleDeleteEmployee = async (id) => {
+        try {
+
+            // Delete user data from Firestore
+            const workerRef = doc(firestore, "Workers", id);
+            await deleteDoc(workerRef);
+
+            // Fetch the updated data from Firestore
+            const workersCollection = collection(firestore, "Workers");
+            const workersSnapshot = await getDocs(workersCollection);
+            const filteredWorkers = workersSnapshot.docs
+                .filter(doc => doc.data().Role === "Worker")
+                .map(doc => ({ id: doc.id, ...doc.data() }));
+
+            // Update the state with the new data
+            setWorkers(filteredWorkers);
+
+            toast.success("User deleted successfully! Please reload the page.");
+        } catch (error) {
+            toast.error('Could not delete user. ', error);
+        }
+    };
 
     // Function to handle form submission and add a new employee
     const handleAddEmployee = async () => {
@@ -105,6 +129,7 @@ const AdminPage = () => {
                             <th>Oct</th>
                             <th>Nov</th>
                             <th>Dec</th>
+                            <th></th> 
                         </tr>
                     </thead>
                     <tbody>
@@ -114,6 +139,11 @@ const AdminPage = () => {
                                 {Object.values(worker.Month).map((Month, index) => (
                                     <td key={index}>{Month}</td>
                                 ))}
+                                <td>
+                                    <button onClick={() => handleDeleteEmployee(worker.id)}>
+                                        Delete
+                                    </button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
