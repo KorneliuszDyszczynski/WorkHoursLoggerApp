@@ -34,6 +34,7 @@ const LoginPage = () => {
             }
         }
         globals.userEmail = username;
+        globals.auth = true;
 
         try {
             //check Role
@@ -42,6 +43,8 @@ const LoginPage = () => {
             const userData = querySnapshot.docs.find(
                 (doc) => doc.data().Email === globals.userEmail
             );
+
+            globals.Name = userData.data().Name;
 
             // If signInWithEmailAndPassword is successful, navigate based on user role
             if (userData.data().Role == 'Admin') {

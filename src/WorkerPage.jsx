@@ -36,9 +36,14 @@ const WorkerPage = () => {
                 console.error('Error fetching worker data:', error);
             }
         };
-
-        fetchWorkerData();
+        if (!globals.auth) {
+            navigate('/login');
+        } else {
+            fetchWorkerData();
+        }
     }, []);
+
+
 
     const handleInputChange = (day, value) => {
         setHours((prevHours) => ({ ...prevHours, [day]: value }));
@@ -63,6 +68,7 @@ const WorkerPage = () => {
                 // If the document already exists, update its data
                 await setDoc(existingDocument.ref, {
                     WorkerEmail: globals.userEmail,
+                    Name: globals.Name,
                     Year: currentYear,
                     Month: currentMonth,
                     DaysHours: hoursArray
@@ -71,6 +77,7 @@ const WorkerPage = () => {
                 // If the document doesn't exist, create a new one
                 const newDocRef = await addDoc(workerCollectionRef, {
                     WorkerEmail: globals.userEmail,
+                    Name: globals.Name,
                     Year: currentYear,
                     Month: currentMonth,
                     DaysHours: hoursArray
@@ -105,33 +112,35 @@ const WorkerPage = () => {
         setHoursArray(array);
     }, [hours]);
 
+    if (globals.auth) {
+        return (
+            <div>
+                <h2>{`Month: ${currentMonth}/${currentYear}`}</h2>
+                <h4>{`Email: ${globals.userEmail}`}</h4>
 
-    return (
-        <div>
-            <h2>{`Month: ${currentMonth}/${currentYear}`}</h2>
-            <h4>{`Email: ${globals.userEmail}`}</h4>
+                <form onSubmit={handleSubmit} className="hours-form">
+                    <div className="form-group">
+                        {daysArray.map((day) => (
+                            <div key={day} className="day-container">
+                                <label htmlFor={`day-${day}`} className="day-label">{`Day ${day}: `}</label>
+                                <input
+                                    type="number"
+                                    id={`day-${day}`}
+                                    value={hours[day] || ''}
+                                    onChange={(e) => handleInputChange(day, e.target.value)}
+                                    className="hours-input"
+                                />
+                            </div>
+                        ))}
+                    </div>
+                    <button type="submit" className="submit-button">
+                        Submit
+                    </button>
+                </form>
+            </div>
+        );
+    }
 
-            <form onSubmit={handleSubmit} className="hours-form">
-                <div className="form-group">
-                    {daysArray.map((day) => (
-                        <div key={day} className="day-container">
-                            <label htmlFor={`day-${day}`} className="day-label">{`Day ${day}: `}</label>
-                            <input
-                                type="number"
-                                id={`day-${day}`}
-                                value={hours[day] || ''}
-                                onChange={(e) => handleInputChange(day, e.target.value)}
-                                className="hours-input"
-                            />
-                        </div>
-                    ))}
-                </div>
-                <button type="submit" className="submit-button">
-                    Submit
-                </button>
-            </form>
-        </div>
-    );
 };
 
 
