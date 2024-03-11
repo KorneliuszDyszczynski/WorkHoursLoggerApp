@@ -47,7 +47,7 @@ const LoginPage = () => {
         } catch (error) {
             console.error('Error logging in:', error.message);
             // Handle authentication error (e.g., display error message)
-            if (error.code === "auth/wrong-password" || error.code === "auth/user-not-found") {
+            if (error.code === "auth/wrong-password" || error.code === "auth/invalid-credential") {
                 // Handle invalid credentials (e.g., display a specific error message to the user)
                 console.error('Invalid credentials. Please check your username and password.');
                 toast.error('Invalid credentials. Please check your username and password.');
